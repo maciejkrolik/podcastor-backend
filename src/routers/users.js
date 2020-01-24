@@ -29,6 +29,30 @@ router.post('/users/login', async (req, res) => {
 
 });
 
+router.get('/users/podcasts', auth, async (req, res) => {
+    res.send(req.user.podcasts);
+});
+
+router.post('/users/addpodcast', auth, async (req, res) => {
+    const podcast = {
+        collectionId: req.body.collectionId,
+        trackId: req.body.trackId,
+        trackName: req.body.trackName,
+        collectionName: req.body.collectionName,
+        feedUrl: req.body.feedUrl,
+        artworkUrl600: req.body.artworkUrl600
+    };
+    req.user.podcasts.push(podcast);
+    await req.user.save();
+    res.status(200).send();
+});
+
+router.delete('/users/podcasts/:id', auth, async (req, res) => {
+    req.user.podcasts.pull({_id: req.params.id});
+    await req.user.save();
+    res.send();
+});
+
 router.get('/users/profile', auth, async (req, res) => {
     res.send(req.user)
 });

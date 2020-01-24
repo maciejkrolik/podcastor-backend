@@ -3,6 +3,15 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const podcastSchema = mongoose.Schema({
+    collectionId: Number,
+    trackId: Number,
+    trackName: String,
+    collectionName: String,
+    feedUrl: String,
+    artworkUrl600: String
+});
+
 const userSchema = mongoose.Schema({
     name: {
         type: String,
@@ -30,7 +39,8 @@ const userSchema = mongoose.Schema({
             type: String,
             required: true
         }
-    }]
+    }],
+    podcasts: [podcastSchema]
 });
 
 userSchema.pre('save', async function (next) {
