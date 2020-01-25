@@ -57,6 +57,15 @@ router.get('/users/profile', auth, async (req, res) => {
     res.send(req.user)
 });
 
+router.post('/users/profile', auth, async (req, res) => {
+    req.user.name = req.body.name;
+    if (req.body.password !== '') {
+        req.user.password = req.body.password;
+    }
+    await req.user.save();
+    res.send();
+});
+
 router.post('/users/logout', auth, async (req, res) => {
     try {
         req.user.tokens = req.user.tokens.filter((token) => {
